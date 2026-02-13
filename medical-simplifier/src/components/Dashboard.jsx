@@ -12,13 +12,15 @@ function Dashboard() {
           Manage your medical reports and interpretations
         </p>
 
+        {/* NEW REPORT */}
         <button
           style={styles.primaryButton}
-          onClick={() => navigate("/history")}
+          onClick={() => navigate("/report-upload")}
         >
           + New Report Interpretation
         </button>
 
+        {/* HISTORY */}
         <button
           style={styles.secondaryButton}
           onClick={() => navigate("/history")}
@@ -26,6 +28,7 @@ function Dashboard() {
           📁 View Previous Results
         </button>
 
+        {/* LOGOUT */}
         <button
           style={styles.logoutButton}
           onClick={() => navigate("/")}
