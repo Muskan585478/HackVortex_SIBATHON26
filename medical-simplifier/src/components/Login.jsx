@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    alert(`Email: ${email}`);
+    navigate("/dashboard");
   };
 
   return (
@@ -37,6 +38,13 @@ function Login() {
           <button type="submit" style={styles.button}>
             Login
           </button>
+          <button
+  type="button"
+  style={styles.linkBtn}
+  onClick={() => navigate("/register")}
+>
+  Create Account
+</button>
         </form>
       </div>
     </div>
