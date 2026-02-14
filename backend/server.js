@@ -3,6 +3,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const path = require("path");
 const connectDB = require("./config/db"); // 👈 ADD THIS
+const aiRoutes = require("./routes/aiRoutes");
 
 // Load env variables
 dotenv.config();
@@ -15,7 +16,7 @@ const app = express();
 // ================= MIDDLEWARE =================
 app.use(cors());
 app.use(express.json());
-
+app.use("/api/ai", aiRoutes);
 // Serve uploaded files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 

@@ -7,24 +7,24 @@ exports.explainReport = async (req, res) => {
     const { text } = req.body;
 
     if (!text) {
-      return res.status(400).json({ error: "Text is required" });
+      return res.status(400).json({ message: "No text provided" });
     }
 
+    // NEW MODEL NAME
     const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash"
+      model: "gemini-3-flash"   // <-- change here
     });
 
     const result = await model.generateContent(
-      `Explain this medical report in simple words for a normal person:\n\n${text}`
+      `Explain this medical report in simple words for a normal person:\n${text}`
     );
 
-    const response = await result.response;
-    const explanation = response.text();
+    const explanation = result.response.text();
 
     res.json({ explanation });
 
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: error.message });
+    console.error("GEMINI ERROR:", error);
+    res.status(500).json({ message: error.message });
   }
 };

@@ -1,25 +1,24 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
-const path = require("path");
+const reportController = require("../controllers/reportController");
 
-const {
-  uploadReport,
-  getReports,
-  getReport,
-} = require("../controllers/reportController");
-
+// STORAGE
 const storage = multer.diskStorage({
-  destination: "uploads/",
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
+    cb(null, Date.now() + "-" + file.originalname);
   },
 });
 
 const upload = multer({ storage });
 
-router.post("/upload", upload.single("report"), uploadReport);
-router.get("/", getReports);
-router.get("/:id", getReport);
+// ROUTES
+router.post("/upload", upload.single("report"), reportController.uploadReport);
+
+router.get("/", reportController.getReports);
+router.get("/:id", reportController.getReport);
 
 module.exports = router;

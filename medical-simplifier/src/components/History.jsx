@@ -14,7 +14,7 @@ function History() {
   }, []);
 
   const openReport = (url) => {
-    window.open(`http://localhost:5000/${url}`, "_blank");
+    window.open(url, "_blank"); // URL already complete from backend
   };
 
   return (
@@ -30,12 +30,14 @@ function History() {
         ) : (
           reports.map((report) => (
             <div
-              key={report._id}
+              key={report.id}
               style={styles.reportItem}
               onClick={() => openReport(report.fileUrl)}
             >
-              <h4 style={{ margin: "0" }}>{report.name}</h4>
-              <small style={styles.date}>{report.date}</small>
+              <h4 style={{ margin: "0" }}>{report.fileName}</h4>
+              <small style={styles.date}>
+                {new Date(report.date).toLocaleDateString()}
+              </small>
             </div>
           ))
         )}
@@ -72,14 +74,12 @@ const styles = {
   },
   title: {
     color: "#0d6efd",
-    textAlign: "center",
-    marginBottom: "5px"
+    textAlign: "center"
   },
   subtitle: {
     fontSize: "14px",
     color: "#6c757d",
-    textAlign: "center",
-    marginBottom: "15px"
+    textAlign: "center"
   },
   reportItem: {
     padding: "15px",

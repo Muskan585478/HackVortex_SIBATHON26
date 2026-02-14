@@ -2,7 +2,12 @@ const mongoose = require("mongoose");
 
 const reportSchema = new mongoose.Schema(
   {
-    originalName: String,
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: false,
+    },
+    fileName: String,
     filePath: String,
     explanation: String,
   },

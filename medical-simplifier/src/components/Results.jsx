@@ -1,12 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Result() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // explanation comes from ReportUpload page
-  const explanation = location.state?.explanation || "No data found";
+  const [explanation, setExplanation] = useState("");
+
+  // If coming from upload page
+  const passedExplanation = location.state?.explanation;
+  const reportId = location.state?.reportId;
+
+  useEffect(() => {
+    // CASE 1: explanation already passed
+    if (passedExplanation) {
+      setExplanation(passedExplanation);
+      return;
+    }
+
+    // CASE 2: page refreshed → fetch from backend
+    if (reportId) {
+      axios
+        .get(`http://localhost:5000/api/reports/${reportId}`)
+        .then((res) => {
+          setExplanation(res.data.explanation);
+        })
+        .catch(() => {
+          setExplanation("Unable to load explanation.");
+        });
+    }
+  }, [passedExplanation, reportId]);
 
   return (
     <div style={styles.container}>
@@ -14,7 +38,7 @@ function Result() {
         <h2 style={styles.title}>Report Explanation</h2>
 
         <div style={styles.resultBox}>
-          {explanation}
+          {explanation || "Loading explanation..."}
         </div>
 
         <button
@@ -54,7 +78,8 @@ const styles = {
     background: "#f8f9fa",
     padding: "20px",
     borderRadius: "8px",
-    minHeight: "150px"
+    minHeight: "150px",
+    whiteSpace: "pre-wrap"
   },
   button: {
     padding: "12px",
@@ -62,7 +87,8 @@ const styles = {
     color: "white",
     border: "none",
     borderRadius: "8px",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    cursor: "pointer"
   }
 };
 
