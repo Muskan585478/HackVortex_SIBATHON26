@@ -1,13 +1,41 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    navigate("/dashboard");
+
+    try {
+      const res = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert("Login Successful");
+        // Optional: store token
+        localStorage.setItem("token", data.token);
+
+        navigate("/dashboard");
+      } else {
+        alert(data.message || "Login Failed");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Server Error");
+    }
   };
 
   return (
@@ -38,13 +66,14 @@ function Login() {
           <button type="submit" style={styles.button}>
             Login
           </button>
+
           <button
-  type="button"
-  style={styles.linkBtn}
-  onClick={() => navigate("/register")}
->
-  Create Account
-</button>
+            type="button"
+            style={styles.linkBtn}
+            onClick={() => navigate("/register")}
+          >
+            Create Account
+          </button>
         </form>
       </div>
     </div>
@@ -95,6 +124,13 @@ const styles = {
     borderRadius: "8px",
     cursor: "pointer",
     fontWeight: "bold",
+  },
+  linkBtn: {
+    marginTop: "8px",
+    background: "none",
+    border: "none",
+    color: "#0d6efd",
+    cursor: "pointer",
   },
 };
 

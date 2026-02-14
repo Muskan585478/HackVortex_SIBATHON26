@@ -2,17 +2,21 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const path = require("path");
+const connectDB = require("./config/db"); // 👈 ADD THIS
 
 // Load env variables
 dotenv.config();
+console.log("Mongo URI:", process.env.MONGO_URI);
 
+// CONNECT DATABASE
+connectDB(); // 👈 ADD THIS
 const app = express();
 
 // ================= MIDDLEWARE =================
 app.use(cors());
 app.use(express.json());
 
-// Serve uploaded files (optional)
+// Serve uploaded files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // ================= TEST ROUTE =================
@@ -21,7 +25,6 @@ app.get("/", (req, res) => {
 });
 
 // ================= ROUTES =================
-// IMPORTANT: routes folder, NOT controllers
 const authRoutes = require("./routes/authRoutes");
 const reportRoutes = require("./routes/reportRoutes");
 

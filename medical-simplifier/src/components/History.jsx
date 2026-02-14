@@ -1,27 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function History() {
   const navigate = useNavigate();
+  const [reports, setReports] = useState([]);
 
-  // Temporary dummy data (replace later with backend data)
-  const reports = [
-    {
-      id: 1,
-      name: "Blood Test Report",
-      date: "12 Feb 2026",
-      fileUrl: "/reports/Muskan Resume.pdf"
-    },
-    {
-      id: 2,
-      name: "X-Ray Report",
-      date: "10 Feb 2026",
-      fileUrl: "/reports/xray.pdf"
-    }
-  ];
+  // FETCH REPORTS FROM BACKEND
+  useEffect(() => {
+    fetch("http://localhost:5000/api/reports")
+      .then((res) => res.json())
+      .then((data) => setReports(data))
+      .catch((err) => console.error("Error fetching reports:", err));
+  }, []);
 
   const openReport = (url) => {
-    window.open(url, "_blank");
+    window.open(`http://localhost:5000/${url}`, "_blank");
   };
 
   return (
@@ -37,7 +30,7 @@ function History() {
         ) : (
           reports.map((report) => (
             <div
-              key={report.id}
+              key={report._id}
               style={styles.reportItem}
               onClick={() => openReport(report.fileUrl)}
             >
@@ -93,8 +86,7 @@ const styles = {
     borderRadius: "10px",
     backgroundColor: "#f8f9fa",
     border: "1px solid #dee2e6",
-    cursor: "pointer",
-    transition: "0.2s"
+    cursor: "pointer"
   },
   date: {
     color: "#6c757d"
