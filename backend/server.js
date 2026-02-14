@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 // Serve uploaded files (optional)
-// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // ================= TEST ROUTE =================
 app.get("/", (req, res) => {
