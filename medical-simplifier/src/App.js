@@ -4,6 +4,7 @@ import History from "./components/History";
 import ReportUpload from "./components/ReportUpload";
 import Login from "./components/Login";
 import Register from "./components/Register"
+import Result from "./components/Results";
 function App() {
   return (
     <Router>
@@ -13,6 +14,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/history" element={<History />} />
         <Route path="/report-upload" element={<ReportUpload />} />
+        <Route path="/result" element={<Result />} />
       </Routes>
     </Router>
   );

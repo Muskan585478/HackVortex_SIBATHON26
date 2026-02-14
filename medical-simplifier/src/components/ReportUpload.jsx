@@ -1,20 +1,38 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function ReportUpload() {
   const [file, setFile] = useState(null);
   const [language, setLanguage] = useState("english");
+  const navigate = useNavigate();
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
 
-  const handleUpload = () => {
-    if (!file) {
-      alert("Please select a PDF file");
-      return;
-    }
-    alert(`File: ${file.name}\nLanguage: ${language}`);
-  };
+  
+  const handleUpload = async () => {
+  if (!file) return alert("Select file");
+
+  const formData = new FormData();
+  formData.append("report", file);
+
+  try {
+    const res = await axios.post(
+      "http://localhost:5000/api/reports/upload",
+      formData
+    );
+
+    // go to result page
+    navigate("/result", {
+      state: { explanation: res.data.explanation }
+    });
+
+  } catch (err) {
+    alert("Upload failed");
+  }
+};
 
   return (
     <div style={styles.container}>

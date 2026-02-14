@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
+const path = require("path");
+
 const {
   uploadReport,
   getReports,
@@ -16,8 +18,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// ROUTES
-router.post("/upload", upload.single("file"), uploadReport);
+router.post("/upload", upload.single("report"), uploadReport);
 router.get("/", getReports);
 router.get("/:id", getReport);
 
